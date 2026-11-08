@@ -22,3 +22,4 @@ Functional testing assignment project repository.
    ```bash
    pytest tests/
    ```
+
