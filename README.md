@@ -34,7 +34,8 @@ pytest --cov=target --cov-branch -v
 
 ## Live URL
 
-> _Will be added after deployment._
+- **Live Application:** [https://functional-testing-2507208.onrender.com](https://functional-testing-2507208.onrender.com)
+- **Health & Commit SHA Endpoint:** [https://functional-testing-2507208.onrender.com/health](https://functional-testing-2507208.onrender.com/health)
 
 ## Project Structure
 
