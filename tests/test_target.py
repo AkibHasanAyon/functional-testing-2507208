@@ -4,6 +4,13 @@ Tests cover: valid inputs, boundary values, invalid values, wrong types,
 result type checks, and precise assertions to catch hidden faulty versions.
 """
 
+# --- INTENTIONAL FAILING TEST FOR RED CI RUN ---
+def test_intentional_fail():
+    """This test is intentionally wrong to demonstrate a red CI run."""
+    from target import is_adult
+    assert is_adult(18) is False  # Wrong! 18 is adult → should be True
+# --- END INTENTIONAL FAIL ---
+
 import pytest
 import math
 from target import (
