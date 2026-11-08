@@ -68,10 +68,19 @@ def parse_arg(value, type_hint):
     return value
 
 
+def get_commit_sha():
+    """Return the current commit SHA from environment or default to 'dev'."""
+    return (
+        os.environ.get("RENDER_GIT_COMMIT")
+        or os.environ.get("COMMIT_SHA")
+        or "dev"
+    )
+
+
 @app.route("/")
 def index():
     """Render the main frontend page."""
-    sha = os.environ.get("COMMIT_SHA", "dev")
+    sha = get_commit_sha()
     return render_template("index.html", sha=sha)
 
 
@@ -167,7 +176,7 @@ def run_function():
 @app.route("/health")
 def health():
     """Return the deployed commit SHA."""
-    sha = os.environ.get("COMMIT_SHA", "dev")
+    sha = get_commit_sha()
     return jsonify({"sha": sha})
 
 

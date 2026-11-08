@@ -44,3 +44,93 @@ jobs:
         with:
           name: coverage-report-${{ matrix.python-version }}
           path: coverage.xml
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Deployment via Deploy Hook
+        run: |
+          if [ -z "${{ secrets.RENDER_DEPLOY_HOOK }}" ]; then
+            echo "❌ ERROR: RENDER_DEPLOY_HOOK secret is not configured in GitHub repository secrets."
+            exit 1
+          fi
+          echo "Triggering deploy hook..."
+          curl -s -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+          echo "Deploy hook triggered successfully."
+
+  smoke-test:
+    needs: deploy
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Deployment and Verify Commit SHA
+        env:
+          APP_URL: ${{ secrets.LIVE_SITE_URL }}
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          if [ -z "$APP_URL" ]; then
+            echo "❌ ERROR: LIVE_SITE_URL secret is not configured in GitHub repository secrets."
+            exit 1
+          fi
+          echo "Expected commit SHA: $EXPECTED_SHA"
+          echo "Live App URL: $APP_URL"
+
+          MAX_ATTEMPTS=30
+          SLEEP_SECONDS=10
+          DEPLOYED=false
+          SHORT_SHA=$(echo "$EXPECTED_SHA" | cut -c1-7)
+
+          for i in $(seq 1 $MAX_ATTEMPTS); do
+            echo "Attempt $i/$MAX_ATTEMPTS: Checking $APP_URL/health..."
+            RESPONSE=$(curl -s "$APP_URL/health" || true)
+            echo "Response: $RESPONSE"
+
+            if echo "$RESPONSE" | grep -q "$EXPECTED_SHA" || echo "$RESPONSE" | grep -q "$SHORT_SHA"; then
+              echo "✅ Live site updated with matching SHA!"
+              DEPLOYED=true
+              break
+            fi
+
+            sleep $SLEEP_SECONDS
+          done
+
+          if [ "$DEPLOYED" != "true" ]; then
+            echo "❌ Deployment timed out or SHA did not match within expected time."
+            exit 1
+          fi
+
+      - name: Run Smoke Tests (3 Live Requests)
+        env:
+          APP_URL: ${{ secrets.LIVE_SITE_URL }}
+        run: |
+          echo "--- Request 1: GET / (Frontend verification) ---"
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL/")
+          echo "HTTP Status: $HTTP_STATUS"
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "❌ Request 1 failed: Expected HTTP 200, got $HTTP_STATUS"
+            exit 1
+          fi
+          echo "✅ Request 1 passed!"
+
+          echo "--- Request 2: POST /run (Functional test: is_adult) ---"
+          POST_RES=$(curl -s -X POST "$APP_URL/run" \
+            -H "Content-Type: application/json" \
+            -d '{"function": "is_adult", "args": {"age": 20}}')
+          echo "Response: $POST_RES"
+          if ! echo "$POST_RES" | grep -q '"result":true'; then
+            echo "❌ Request 2 failed: Expected {\"result\":true}, got $POST_RES"
+            exit 1
+          fi
+          echo "✅ Request 2 passed!"
+
+          echo "--- Request 3: GET /health (Health & SHA endpoint) ---"
+          HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL/health")
+          echo "HTTP Status: $HEALTH_STATUS"
+          if [ "$HEALTH_STATUS" != "200" ]; then
+            echo "❌ Request 3 failed: Expected HTTP 200, got $HEALTH_STATUS"
+            exit 1
+          fi
+          echo "✅ Request 3 passed!"
+          echo "🎉 All 3 smoke tests passed successfully!"
