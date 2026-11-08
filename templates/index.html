@@ -3,10 +3,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Functional Testing</title>
+    <title>Functional Testing Dashboard — 2507208</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .function-card { transition: box-shadow 0.2s; }
+        .function-card:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .result-box {
+            margin-top: 10px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            display: none;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+        }
+        .result-success { background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+        .result-error { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
+        .section-title { border-bottom: 3px solid #0d6efd; padding-bottom: 8px; }
+        footer { background-color: #212529; color: #adb5bd; }
+        .badge-type { font-size: 0.7rem; }
+    </style>
 </head>
 <body>
-    <h1>Functional Testing</h1>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark mb-4">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">🧪 Functional Testing Dashboard</span>
+            <span class="navbar-text text-light">Student ID: 2507208</span>
+        </div>
+    </nav>
+
+    <div class="container pb-5">
+        <!-- Data Type Functions -->
+        <h2 class="section-title mb-4">📊 Data Type Functions</h2>
+        <div class="row g-4 mb-5">
+
+            <!-- 1. is_adult -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">1. is_adult(age)
+                            <span class="badge bg-info badge-type">Integer → Boolean</span>
+                        </h5>
+                        <p class="card-text text-muted small">True if age ≥ 18. Negative age raises ValueError.</p>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="is_adult-age" placeholder="Age (e.g. 18)">
+                            <button class="btn btn-primary" onclick="runFunc('is_adult', {age: val('is_adult-age')})">Run</button>
+                        </div>
+                        <div class="result-box" id="is_adult-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. celsius_to_fahrenheit -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">2. celsius_to_fahrenheit(c)
+                            <span class="badge bg-info badge-type">Float → Float</span>
+                        </h5>
+                        <p class="card-text text-muted small">Convert °C to °F, rounded to 2 decimals.</p>
+                        <div class="input-group">
+                            <input type="number" step="any" class="form-control" id="c2f-celsius" placeholder="Celsius (e.g. 100)">
+                            <button class="btn btn-primary" onclick="runFunc('celsius_to_fahrenheit', {celsius: val('c2f-celsius')})">Run</button>
+                        </div>
+                        <div class="result-box" id="celsius_to_fahrenheit-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. count_vowels -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">3. count_vowels(text)
+                            <span class="badge bg-info badge-type">String → Integer</span>
+                        </h5>
+                        <p class="card-text text-muted small">Count vowels (a,e,i,o,u), case-insensitive. Non-string raises TypeError.</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="cv-text" placeholder="Text (e.g. hello)">
+                            <button class="btn btn-primary" onclick="runFunc('count_vowels', {text: val('cv-text')})">Run</button>
+                        </div>
+                        <div class="result-box" id="count_vowels-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. invert -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">4. invert(flag)
+                            <span class="badge bg-info badge-type">Boolean → Boolean</span>
+                        </h5>
+                        <p class="card-text text-muted small">Return the opposite. Non-bool raises TypeError.</p>
+                        <div class="input-group">
+                            <select class="form-select" id="inv-flag">
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="runFunc('invert', {flag: val('inv-flag')})">Run</button>
+                        </div>
+                        <div class="result-box" id="invert-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. greet -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">5. greet(name)
+                            <span class="badge bg-info badge-type">String/None → String</span>
+                        </h5>
+                        <p class="card-text text-muted small">Greet by name; defaults to "Guest" if empty/None.</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="greet-name" placeholder="Name (leave empty for Guest)">
+                            <button class="btn btn-primary" onclick="runFunc('greet', {name: val('greet-name')})">Run</button>
+                        </div>
+                        <div class="result-box" id="greet-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. find_max -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">6. find_max(numbers)
+                            <span class="badge bg-info badge-type">List → Number</span>
+                        </h5>
+                        <p class="card-text text-muted small">Return largest number. Empty list raises ValueError.</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="fm-numbers" placeholder="JSON list, e.g. [1,2,3]">
+                            <button class="btn btn-primary" onclick="runFunc('find_max', {numbers: val('fm-numbers')})">Run</button>
+                        </div>
+                        <div class="result-box" id="find_max-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. get_price -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">7. get_price(prices, item)
+                            <span class="badge bg-info badge-type">Dict, String → Number</span>
+                        </h5>
+                        <p class="card-text text-muted small">Return price of item. Missing key raises KeyError.</p>
+                        <div class="mb-2">
+                            <input type="text" class="form-control form-control-sm" id="gp-prices" placeholder='JSON dict, e.g. {"apple":1.5,"banana":0.75}'>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="gp-item" placeholder="Item name">
+                            <button class="btn btn-primary" onclick="runFunc('get_price', {prices: val('gp-prices'), item: val('gp-item')})">Run</button>
+                        </div>
+                        <div class="result-box" id="get_price-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. swap -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">8. swap(pair)
+                            <span class="badge bg-info badge-type">Tuple → Tuple</span>
+                        </h5>
+                        <p class="card-text text-muted small">Swap two values. Not exactly 2 raises ValueError.</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="swap-pair" placeholder="JSON array, e.g. [1, 2]">
+                            <button class="btn btn-primary" onclick="runFunc('swap', {pair: val('swap-pair')})">Run</button>
+                        </div>
+                        <div class="result-box" id="swap-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. common_items -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">9. common_items(a, b)
+                            <span class="badge bg-info badge-type">Set, Set → Set</span>
+                        </h5>
+                        <p class="card-text text-muted small">Return items found in both sets.</p>
+                        <div class="mb-2">
+                            <input type="text" class="form-control form-control-sm" id="ci-seta" placeholder="Set A as JSON, e.g. [1,2,3]">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="ci-setb" placeholder="Set B as JSON, e.g. [2,3,4]">
+                            <button class="btn btn-primary" onclick="runFunc('common_items', {set_a: val('ci-seta'), set_b: val('ci-setb')})">Run</button>
+                        </div>
+                        <div class="result-box" id="common_items-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. is_leap_year -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">10. is_leap_year(year)
+                            <span class="badge bg-info badge-type">Integer → Boolean</span>
+                        </h5>
+                        <p class="card-text text-muted small">True if year is a leap year. Year &lt; 1 raises ValueError.</p>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="ly-year" placeholder="Year (e.g. 2024)">
+                            <button class="btn btn-primary" onclick="runFunc('is_leap_year', {year: val('ly-year')})">Run</button>
+                        </div>
+                        <div class="result-box" id="is_leap_year-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. to_int -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">11. to_int(value)
+                            <span class="badge bg-info badge-type">Any → Integer</span>
+                        </h5>
+                        <p class="card-text text-muted small">Convert to int. Bool raises TypeError.</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="ti-value" placeholder="Value (e.g. 42 or 3.9)">
+                            <button class="btn btn-primary" onclick="runFunc('to_int', {value: val('ti-value')})">Run</button>
+                        </div>
+                        <div class="result-box" id="to_int-result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Math Functions -->
+        <h2 class="section-title mb-4">🔢 Math Functions</h2>
+        <div class="row g-4 mb-5">
+
+            <!-- 12. divide -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">12. divide(a, b)
+                            <span class="badge bg-warning text-dark badge-type">Math</span>
+                        </h5>
+                        <p class="card-text text-muted small">Return a / b. Division by zero raises ZeroDivisionError.</p>
+                        <div class="input-group">
+                            <input type="number" step="any" class="form-control" id="div-a" placeholder="a">
+                            <input type="number" step="any" class="form-control" id="div-b" placeholder="b">
+                            <button class="btn btn-primary" onclick="runFunc('divide', {a: val('div-a'), b: val('div-b')})">Run</button>
+                        </div>
+                        <div class="result-box" id="divide-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 13. power -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">13. power(base, exp)
+                            <span class="badge bg-warning text-dark badge-type">Math</span>
+                        </h5>
+                        <p class="card-text text-muted small">Return base raised to exponent.</p>
+                        <div class="input-group">
+                            <input type="number" step="any" class="form-control" id="pow-base" placeholder="Base">
+                            <input type="number" step="any" class="form-control" id="pow-exp" placeholder="Exponent">
+                            <button class="btn btn-primary" onclick="runFunc('power', {base: val('pow-base'), exponent: val('pow-exp')})">Run</button>
+                        </div>
+                        <div class="result-box" id="power-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 14. square_root -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">14. square_root(x)
+                            <span class="badge bg-warning text-dark badge-type">Math</span>
+                        </h5>
+                        <p class="card-text text-muted small">Return √x. Negative raises ValueError.</p>
+                        <div class="input-group">
+                            <input type="number" step="any" class="form-control" id="sqrt-x" placeholder="x (e.g. 16)">
+                            <button class="btn btn-primary" onclick="runFunc('square_root', {x: val('sqrt-x')})">Run</button>
+                        </div>
+                        <div class="result-box" id="square_root-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 15. factorial -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">15. factorial(n)
+                            <span class="badge bg-warning text-dark badge-type">Math</span>
+                        </h5>
+                        <p class="card-text text-muted small">Return n!. Negative raises ValueError.</p>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="fact-n" placeholder="n (e.g. 5)">
+                            <button class="btn btn-primary" onclick="runFunc('factorial', {n: val('fact-n')})">Run</button>
+                        </div>
+                        <div class="result-box" id="factorial-result"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 16. average -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card function-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">16. average(numbers)
+                            <span class="badge bg-warning text-dark badge-type">Math</span>
+                        </h5>
+                        <p class="card-text text-muted small">Return mean of list. Empty raises ValueError.</p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="avg-numbers" placeholder="JSON list, e.g. [1,2,3]">
+                            <button class="btn btn-primary" onclick="runFunc('average', {numbers: val('avg-numbers')})">Run</button>
+                        </div>
+                        <div class="result-box" id="average-result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer with SHA -->
+    <footer class="py-3 mt-auto">
+        <div class="container text-center">
+            <small>Functional Testing Dashboard — Student ID: 2507208 | Commit SHA: <code id="footer-sha">loading...</code></small>
+        </div>
+    </footer>
+
+    <script>
+        // Fetch and display the commit SHA in footer
+        fetch('/health')
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('footer-sha').textContent = data.sha;
+            })
+            .catch(() => {
+                document.getElementById('footer-sha').textContent = 'unavailable';
+            });
+
+        // Helper to get value from an input element
+        function val(id) {
+            return document.getElementById(id).value;
+        }
+
+        // Run a target function via the /run API
+        function runFunc(funcName, args) {
+            const resultDiv = document.getElementById(funcName + '-result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result-box';
+            resultDiv.textContent = '⏳ Running...';
+
+            fetch('/run', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ function: funcName, args: args })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.error) {
+                    resultDiv.className = 'result-box result-error';
+                    resultDiv.textContent = `❌ ${data.type}: ${data.error}`;
+                } else {
+                    resultDiv.className = 'result-box result-success';
+                    const result = JSON.stringify(data.result);
+                    resultDiv.textContent = `✅ Result: ${result}`;
+                }
+            })
+            .catch(err => {
+                resultDiv.className = 'result-box result-error';
+                resultDiv.textContent = `❌ Network error: ${err.message}`;
+            });
+        }
+    </script>
 </body>
 </html>
-
