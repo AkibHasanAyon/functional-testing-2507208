@@ -55,8 +55,8 @@ class TestCelsiusToFahrenheit:
         (0, 32.0),          # freezing point
         (100, 212.0),       # boiling point
         (-40, -40.0),       # same in both scales
-        (37, 98.6),         # body temperature
-        (-273.15, -459.67), # absolute zero
+        (37, 98.6),          # body temperature
+        (-273.15, -459.67),  # absolute zero
         (0.5, 32.9),        # fractional input
     ])
     def test_valid_conversions(self, celsius, expected):
@@ -110,7 +110,10 @@ class TestInvert:
     def test_invert_false(self):
         assert invert(False) is True
 
-    @pytest.mark.parametrize("invalid_input", [0, 1, "true", "false", None, [], 0.0])
+    @pytest.mark.parametrize(
+        "invalid_input",
+        [0, 1, "true", "false", None, [], 0.0]
+    )
     def test_non_bool_raises_type_error(self, invalid_input):
         with pytest.raises(TypeError, match="flag must be True or False"):
             invert(invalid_input)
@@ -209,7 +212,9 @@ class TestSwap:
         [1, 2, 3],  # list with 3
     ])
     def test_invalid_length_raises_value_error(self, invalid_pair):
-        with pytest.raises(ValueError, match="pair must have exactly 2 values"):
+        with pytest.raises(
+            ValueError, match="pair must have exactly 2 values"
+        ):
             swap(invalid_pair)
 
 

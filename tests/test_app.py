@@ -1,7 +1,6 @@
 """Functional tests for the Flask web application (app.py)."""
 
 import pytest
-import json
 from app import app
 
 
